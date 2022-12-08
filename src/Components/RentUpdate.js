@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import rentServices from "../services/rentServices";
 import userServices from "../services/usernameServices";
 import carServices from "../services/carServices";
+import Swal from "sweetalert2";
 
 const RentUpdate = props => {
     const { id_rent } = useParams();
@@ -73,6 +74,13 @@ const RentUpdate = props => {
         rentServices.update(Rent.id_rent, Rent , Rent.username, Rent.car) 
             .then(response => {
                 console.log(response.data);
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: 'Alquiler Actualizado Correctamente',
+                    showConfirmButton: false,
+                    timer: 2200
+                  })
             })
             .catch(e => {
                 console.log(e);
@@ -89,7 +97,10 @@ const RentUpdate = props => {
                 <h4>Actualizar Fecha de Alquiler del Id : {Rent.id_rent}</h4>
                 <blockquote class="blockquote mb-0 ">
 
-                    <form novalidate onSubmit={updateRent}
+                    <form novalidate onSubmit={e=>{
+                        e.preventDefault()
+                        updateRent()
+                    }}
 
 
                         class="row g-3 needs-validation my-3  border = 1" >
@@ -111,7 +122,7 @@ const RentUpdate = props => {
 
 
                         <div class="col-md-3 position-relative">
-                            <label for="car" class="form-label">Vehiculo</label>
+                            <label for="car" class="form-label">Vehículo</label>
                             <div class="input-group has-validation">
                                 <span class="input-group-text">
                                 <i class="bi bi-car-front-fill"> </i>

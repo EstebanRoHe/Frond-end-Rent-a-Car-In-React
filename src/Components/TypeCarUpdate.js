@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import typeCarServices from "../services/typecarServices";
-
+import Swal from "sweetalert2";
 
 
 const TypeCarUpDate = () => {
@@ -39,6 +39,13 @@ const TypeCarUpDate = () => {
         typeCarServices.update(TypeCar.id_typeCar, TypeCar)
             .then(response => {
                 console.log(response.data);
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: 'Tipo de Vehiculo Actualizado Correctamente',
+                    showConfirmButton: false,
+                    timer: 2200
+                  })
             })
             .catch(e => {
                 console.log(e);
@@ -48,10 +55,13 @@ const TypeCarUpDate = () => {
     return (
         <div class="card  ">
             <div class="card-body ">
-                <h5>Actualizar Tipo de Vehiculo del Id : {TypeCar.id_typeCar}</h5>
+                <h5>Actualizar Tipo de Vehículo del Id : {TypeCar.id_typeCar}</h5>
                 <blockquote class="blockquote mb-0 ">
 
-                    <form novalidate onSubmit={updateTypeCar}
+                    <form novalidate onSubmit={e=>{
+                        e.preventDefault()
+                        updateTypeCar()
+                    }}
                         class="row g-3 needs-validation my-3  border = 1" >
 
                         <div class="col-md-3 position-relative">

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import carServices from "../services/carServices";
 import typeCarServices from "../services/typecarServices";
+import Swal from "sweetalert2";
 
 
 const CarUpdate = props => {
@@ -11,7 +12,7 @@ const CarUpdate = props => {
         id_car: null,
         licence_plate: "",
         description: "",
-        color: "",
+        image: "",
         cylinder_capacity: "",
         capacity: "",
         model_year: "",
@@ -62,6 +63,13 @@ const CarUpdate = props => {
         carServices.update(Car.id_car, Car)
             .then(response => {
                 console.log(response.data);
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: 'Vehiculo Actualizado Correctamente',
+                    showConfirmButton: false,
+                    timer: 2200
+                  })
             })
             .catch(e => {
                 console.log(e);
@@ -75,10 +83,13 @@ const CarUpdate = props => {
 
 
             <div class="card-body ">
-                <h4>Actualizar Vehiculo del Id : {Car.id_car}</h4>
+                <h4>Actualizar Vehículo del Id : {Car.id_car}</h4>
                 <blockquote class="blockquote mb-0 ">
 
-                    <form novalidate onSubmit={updateCar}
+                    <form novalidate onSubmit={ e =>{
+                        e.preventDefault()
+                        updateCar()
+                    }}
 
 
                         class="row g-3 needs-validation my-3  border = 1" >
@@ -114,13 +125,13 @@ const CarUpdate = props => {
 
 
                         <div class="col-md-3 position-relative">
-                            <label for="color" class="form-label ">Color</label>
+                            <label for="image" class="form-label ">Imagen</label>
                             <div class="input-group has-validation">
                                 <span class="input-group-text">
-                                <i class="bi bi-paint-bucket"></i>
+                                <i class="bi bi-image"></i>
                                 </span>
-                                <input type="text" class="form-control" id="color" value={Car.color}
-                                    onChange={handleInputChange} name="color" required />
+                                <input type="text" class="form-control" id="image" value={Car.image}
+                                    onChange={handleInputChange} name="image" required />
                                 <div class="invalid-tooltip">
                                     Please provide a valid emil.
                                 </div>
@@ -157,7 +168,7 @@ const CarUpdate = props => {
                             </div>
                         </div>
 
-
+ 
                         <div class="col-md-3 position-relative">
                             <label for="model_year" class="form-label">Modelo</label>
                             <div class="input-group has-validation">

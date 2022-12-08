@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import userServices from "../services/usernameServices";
 import { Link, useNavigate } from "react-router-dom";
-
+import Swal from "sweetalert2";
 const UserList = () => {
     const [User, setUser] = useState([]);
     let navigate = useNavigate;
@@ -23,11 +23,48 @@ const UserList = () => {
     };
 
     const remove = (id_username) => {
-        userServices.remove(id_username)
-            .then(response => {
-                console.log(response.data);
-                navigate(getList());
-            });
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+              confirmButton: 'btn btn-success',
+              cancelButton: 'btn btn-danger'
+            },
+            buttonsStyling: false
+          })
+          
+          swalWithBootstrapButtons.fire({
+            title: 'Deseas eliminar este archivo?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Si, eliminar!',
+            cancelButtonText: 'No, cancelar!',
+            reverseButtons: true
+          }).then((result) => {
+            if (result.isConfirmed) {
+                userServices.remove(id_username)
+                .then(response => {
+                    console.log(response.data);
+                    swalWithBootstrapButtons.fire(
+                        'Eliminado!',
+                        'Tu archivo ha sido eliminado',
+                        'Correctamente'
+                      )
+                    navigate(getList());
+                })  
+              swalWithBootstrapButtons.fire(
+                'Error!',
+                'Tu archivo esta ligado a otro, Primero elimine el archivo ligado a este Correctamente'
+              )
+            } else if (
+              
+              result.dismiss === Swal.DismissReason.cancel
+            ) {
+              swalWithBootstrapButtons.fire(
+                'Cancelado',
+                'No se ha eliminado nungun archivo'
+              )
+            }
+          })
+       
     };
 
     return (
@@ -69,7 +106,7 @@ const UserList = () => {
                                                 <i class="bi bi-gear"> Actualizar</i>
                                             </Link>
                                             <button className="btn btn-danger" onClick={() => remove(username.id_username)}>
-                                            <i class="bi bi-x-circle"> Eliminar</i>
+                                            <i class="bi bi-trash3"> Eliminar</i>
                                             </button>
                                             </div>
 

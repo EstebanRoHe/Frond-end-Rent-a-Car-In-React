@@ -15,21 +15,24 @@ import CarUpdate from './Components/CarUpdate';
 import RentList from './Components/RentList';
 import RentCreate from './Components/RentCreate';
 import RentUpdate from './Components/RentUpdate';
+import IndexRent from './Components/IndexRent';
+
 function App() {
 
-  return (<div>
+  return (
+  <div>
 
     <nav className="navbar navbar-expand navbar-dark bg-dark ms-auto">
-    <a href="/UserList" className="navbar-brand">UNA</a>
+    <a href="/IndexRent" className="navbar-brand mx-2"> UNA</a>
       <div className="nav navbar-nav mr-auto">
         <li className="nav-item">
           <Link to={"/UserList"} className="nav-item nav-link active">Usuarios</Link>
         </li>
         <li className="nav-item">
-          <Link to={"/TypeCarList"} className="nav-item nav-link active">Tipo de Vehiculos</Link>
+          <Link to={"/TypeCarList"} className="nav-item nav-link active">Tipo de Vehículos</Link>
         </li>
         <li className="nav-item">
-          <Link to={"/CarList"} className="nav-item nav-link active">Vehiculos</Link>
+          <Link to={"/CarList"} className="nav-item nav-link active">Vehículos</Link>
         </li>
         <li className="nav-item">
           <Link to={"/RentList"} className="nav-item nav-link active" >Rentar</Link>
@@ -54,14 +57,9 @@ function App() {
         <Route path="/RentList" element={<RentList />} />
         <Route path="/RentCreate" element={<RentCreate />} />
         <Route path="/RentUpdate/:id_rent" element={<RentUpdate />} />
-
+        <Route path="/IndexRent" element={<IndexRent />} />
       </Routes>
     </div>
-
-
-
-
-
   </div>);
 };
 

@@ -1,6 +1,7 @@
-import React, { useState} from "react";
+import React, { useState,useEffect} from "react";
 import typeCarServices from "../services/typecarServices";
 import { Link } from 'react-router-dom';
+import Swal from "sweetalert2";
 
 
 const TypeCarCreate = () => {
@@ -10,35 +11,51 @@ const TypeCarCreate = () => {
     }
 
     const [TypeCar, setTypeCar] = useState(initialTypeCarState);
+ 
 
     const handleInputChange = event => {
         const {name, value } = event.target;
         setTypeCar({...TypeCar, [name]: value });
     }
 
-    
-
     const createTypeCar = () => {
+       
         var date = { id_typeCar: TypeCar.id_typeCar, description: TypeCar.description}
         typeCarServices.create(date)
             .then(response => {  
                 setTypeCar({description: response.data.description});
-                console.log(response.data);
+                console.log(response.data);  
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: 'Tipo de Vehiculo Registrado Correctamente',
+                    showConfirmButton: false,
+                    timer: 2200
+                  }).then(
+                    newTypeCar()
+                  );
             })
             .catch(e => {
                 console.log(e);
             })
+    };
 
-
+    const newTypeCar = ()=>{
+        setTypeCar(initialTypeCarState);   
     }
+
 
     return (
         <div class="card  ">
+
             <div class="card-body ">
-            <h4>Registrar</h4>
+            <h4>Registrar Tipo de Vehículo</h4>
                 <blockquote class="blockquote mb-0 ">
 
-                    <form novalidate onSubmit={createTypeCar}
+                    <form novalidate onSubmit={ e => {
+                        e.preventDefault();
+                        createTypeCar();
+                    }}
                         class="row g-3 needs-validation my-3  border = 1" >
 
                         <div class="col-md-3 position-relative">
@@ -47,7 +64,9 @@ const TypeCarCreate = () => {
                                 <span class="input-group-text">
                                 <i class="bi bi-pencil-square"></i>
                                 </span>
-                            <input type="text" class="form-control" id="description" value={TypeCar.description} onChange={handleInputChange} name="description" required />
+                            <input type="text" class="form-control" id="description" value={TypeCar.description}
+                            placeholder="4x4, 4x2, sedán, coupe etc..."   
+                            onChange={handleInputChange} name="description" required />
                             <div class="valid-tooltip">
                                 Looks good!
                             </div>
